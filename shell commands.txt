@@ -1,0 +1,9 @@
+
+pip install openpifpaf
+
+python -m openpifpaf.predict coco/000000081988.jpg --image-output --json-output
+
+python -m openpifpaf.video --source myvideotoprocess.mp4 --video-output --json-output
+
+
+
