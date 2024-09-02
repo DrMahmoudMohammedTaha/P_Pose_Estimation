@@ -1,27 +1,30 @@
 from utils import (read_video, 
-                   save_video
+                   save_video,
+                   apply_func_to_video,
+                   apply_func_to_image,
+                   process_image,
+                   draw_on_image
                    )
-from service import(draw_keypoints)
-import numpy as np
+from service import(draw_keypoints,get_predictions,convert_keypoints_to_persons, search_target)
 
-def apply_func_to_video(video_name , operation):
-     
-    input_path = "data/" + video_name + ".mp4"
-    output_path = "output/" + video_name+ ".avi"
-    
-    input_frames = read_video(input_path)
-    output_frames = []
 
-    for i, frame in enumerate(input_frames):
-
-        print("Processing frame NO: " + str(i))
-        # TODO: operation of video frames
-        output_frames.append(operation(frame))
-
-    print("No frames: " + str(len(input_frames)))
-    print("Input Shape:" , input_frames[0].shape)
-    print("Output Shape:" , output_frames[0].shape)
-    save_video(output_frames, output_path)
+def search_person_task(source_image , search_image):
+    preds = process_image(source_image,[get_predictions])
+    source = convert_keypoints_to_persons(preds)
+    preds = process_image(search_image,[get_predictions])
+    people = convert_keypoints_to_persons(preds)
+    selected = search_target(source[0], people)
+    draw_on_image(search_image,selected.limbs)
 
 if __name__ == '__main__':
-    apply_func_to_video("test-1" , draw_keypoints)
+
+    # apply_func_to_video("test-1" , [draw_keypoints])
+    source_img = "mo.jpg"
+    search_images = ["mo-3.jpg", "mo-5.jpg"]
+    
+    for img in search_images:
+        search_person_task(source_img,img)
+
+
+
+

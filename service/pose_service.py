@@ -4,20 +4,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def get_image(path):
-    
-    image = cv2.imread(path)
-    return  image
+def get_predictions(image):
+    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    predictor = openpifpaf.Predictor()
+    predictions, _, _ = predictor.numpy_image(image_rgb)
+    return predictions
 
 def draw_keypoints(image):
 
-    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    # Initialize the predictor
-    predictor = openpifpaf.Predictor()
 
-    # Predict keypoints and poses
-    predictions, _, _ = predictor.numpy_image(image_rgb)
-
+    predictions = get_predictions(image)
     # The `predictions` variable contains the keypoints and skeleton information
     # You can process or visualize the predictions here
 
@@ -62,7 +58,7 @@ def draw_keypoints(image):
     return image_with_predictions    
 
 if __name__ == '__main__':
-    img = get_image('C:\\Users\\Mahmoud_Taha\\Downloads\\temp\\fight.jpg')
+    img = cv2.imread('C:\\Users\\Mahmoud_Taha\\Downloads\\temp\\fight.jpg')
     img = draw_keypoints(img)
 
     plt.imshow(cv2.cvtColor(img , cv2.COLOR_BGR2RGB))
