@@ -12,7 +12,6 @@ def get_predictions(image):
 
 def draw_keypoints(image):
 
-
     predictions = get_predictions(image)
     # The `predictions` variable contains the keypoints and skeleton information
     # You can process or visualize the predictions here
@@ -41,8 +40,6 @@ def draw_keypoints(image):
         for point in keypoints:
             for i in range(0, len(point), 3):
                 x, y, confidence = point[i], point[i+1], point[i+2]
-                # print(x)
-                # print(y)
 
                 if confidence > 0.5:  # You can set a threshold for confidence
                     cv2.circle(image_with_predictions, (int(x), int(y)), 3, (0, 255, 0), -1)
